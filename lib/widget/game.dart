@@ -110,6 +110,10 @@ class _GameActivityState extends State<GameActivity> {
                     setState(() {
                       flaggedSquares[position] = true;
                     });
+                  }else{
+                    setState(() {
+                      flaggedSquares[position] = false;
+                    });
                   }
                 },
                 splashColor: Colors.grey,
