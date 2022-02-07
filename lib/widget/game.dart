@@ -5,6 +5,7 @@ import 'package:minesweeper/data/board_square.dart';
 import 'package:minesweeper/utils/image_utils.dart';
 
 class GameActivity extends StatefulWidget {
+  static const  String routeName = '/game-activity';
 
   @override
   _GameActivityState createState() => _GameActivityState();
@@ -45,14 +46,15 @@ class _GameActivityState extends State<GameActivity> {
                   onTap: () {
                     _initializeGame();
                   },
-                  child: CircleAvatar(
-                    child: Icon(
-                      Icons.tag_faces,
-                      color: Colors.black,
-                      size: 40,
-                    ),
-                    backgroundColor: Colors.yellowAccent,
-                  ),
+                  child: Text('Minesweeper', style: TextStyle(fontFamily: 'Calli', color: Colors.amber, fontSize: 25),),
+                  // child: CircleAvatar(
+                  //   child: Icon(
+                  //     Icons.tag_faces,
+                  //     color: Colors.black,
+                  //     size: 40,
+                  //   ),
+                  //   backgroundColor: Colors.yellowAccent,
+                  // ),
                 )
               ],
             ),
@@ -108,11 +110,7 @@ class _GameActivityState extends State<GameActivity> {
                 onLongPress: () {
                   if (openedSquares[position] == false) {
                     setState(() {
-                      flaggedSquares[position] = true;
-                    });
-                  }else{
-                    setState(() {
-                      flaggedSquares[position] = false;
+                      flaggedSquares[position] = !flaggedSquares[position];
                     });
                   }
                 },
