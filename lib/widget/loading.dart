@@ -21,6 +21,7 @@ class _LoadingState extends State<Loading> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: FutureBuilder<bool>(
           future: initials(),
           builder: (context, isLoading) {

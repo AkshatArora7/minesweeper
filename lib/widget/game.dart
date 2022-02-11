@@ -2,22 +2,23 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:minesweeper/data/board_square.dart';
+import 'package:minesweeper/utils/SizeConfig.dart';
 import 'package:minesweeper/utils/image_utils.dart';
 
 class GameActivity extends StatefulWidget {
-  static const  String routeName = '/game-activity';
+  static const String routeName = '/game-activity';
 
   @override
   _GameActivityState createState() => _GameActivityState();
 }
 
 class _GameActivityState extends State<GameActivity> {
-
   int rowCount = 18;
   int columnCount = 10;
 
   // Grid of square
   late List<List<BoardSquare>> board;
+
   // List of clicked squares
   late List<bool> openedSquares;
   late List<bool> flaggedSquares;
@@ -31,12 +32,11 @@ class _GameActivityState extends State<GameActivity> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: ListView(
         children: <Widget>[
           Container(
-            color: Colors.grey,
+            color: Colors.grey.shade600,
             height: 60,
             width: double.infinity,
             child: Row(
@@ -46,7 +46,14 @@ class _GameActivityState extends State<GameActivity> {
                   onTap: () {
                     _initializeGame();
                   },
-                  child: Text('Minesweeper', style: TextStyle(fontFamily: 'Calli', color: Colors.amber, fontSize: 25),),
+                  child: Text(
+                    'Minesweeper',
+                    style: TextStyle(
+                      fontFamily: 'Calli',
+                      color: Color(0xff40bfab),
+                      fontSize: MySize.size50,
+                    ),
+                  ),
                   // child: CircleAvatar(
                   //   child: Icon(
                   //     Icons.tag_faces,
@@ -63,7 +70,8 @@ class _GameActivityState extends State<GameActivity> {
           GridView.builder(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: columnCount),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: columnCount),
             itemBuilder: (context, position) {
               int rowNumber = (position / columnCount).floor();
               int columnNumber = (position % columnCount);
@@ -101,10 +109,9 @@ class _GameActivityState extends State<GameActivity> {
                     });
                   }
 
-                  if(squaresLeft <= bombCount) {
+                  if (squaresLeft <= bombCount) {
                     _handleWin();
                   }
-
                 },
                 // Flags square
                 onLongPress: () {
@@ -143,11 +150,11 @@ class _GameActivityState extends State<GameActivity> {
     });
 
     // Initialize list
-    openedSquares = List.generate(rowCount * columnCount, (i){
+    openedSquares = List.generate(rowCount * columnCount, (i) {
       return false;
     });
 
-    flaggedSquares = List.generate(rowCount * columnCount, (i){
+    flaggedSquares = List.generate(rowCount * columnCount, (i) {
       return false;
     });
 
@@ -225,23 +232,28 @@ class _GameActivityState extends State<GameActivity> {
 
   void _handleGameOver() {
     showDialog(
+      barrierDismissible: false,
         context: context,
         builder: (context) {
-          return AlertDialog(
-            title: Text("Game Over :("),
-            content: Text("You click a bomb"),
-            actions: <Widget>[
-              FlatButton(
-                onPressed: () {
-                  _initializeGame();
-                  Navigator.pop(context);
-                },
-                child: Text("Play again"),
-              )
-            ],
+          return WillPopScope(
+            onWillPop: ()async{
+              return Future.value(false);
+            },
+            child: AlertDialog(
+              title: Text("Game Over :("),
+              content: Text("You click a bomb"),
+              actions: <Widget>[
+                FlatButton(
+                  onPressed: () {
+                    _initializeGame();
+                    Navigator.pop(context);
+                  },
+                  child: Text("Play again"),
+                )
+              ],
+            ),
           );
-        }
-    );
+        });
   }
 
   void _handleWin() {
@@ -261,14 +273,12 @@ class _GameActivityState extends State<GameActivity> {
               )
             ],
           );
-        }
-    );
+        });
   }
-
 
   // This function opens other squares around the target square which don't have any bombs around them.
   // We use a recursive function which stops at squares which have a non zero number of bombs around them.
-  void _handleTap(int i , int j) {
+  void _handleTap(int i, int j) {
     int position = (i * columnCount) + j;
     openedSquares[position] = true;
     squaresLeft = squaresLeft - 1;
