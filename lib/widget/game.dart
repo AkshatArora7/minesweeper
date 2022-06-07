@@ -171,7 +171,7 @@ class _GameActivityState extends State<GameActivity> {
             },
             itemCount: rowCount * columnCount,
           ),
-          Container(
+            Container(
             padding: Spacing.top(10, withResponsive: true),
             alignment: Alignment.center,
             child: AdWidget(
@@ -189,8 +189,13 @@ class _GameActivityState extends State<GameActivity> {
   @override
   void initState() {
     super.initState();
-    homeBanner.load();
-    InterstitialAd.load(
+    _initializeGame();
+    _loadAds();
+  }
+
+  _loadAds() async{
+    await homeBanner.load();
+    await InterstitialAd.load(
         adUnitId: AdsUnits.interstitialRepeat,
         request: AdRequest(),
         adLoadCallback: InterstitialAdLoadCallback(
@@ -202,20 +207,6 @@ class _GameActivityState extends State<GameActivity> {
             print('InterstitialAd failed to load: $error');
           },
         ));
-    // _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
-    //   onAdShowedFullScreenContent: (InterstitialAd ad) =>
-    //       print('%ad onAdShowedFullScreenContent.'),
-    //   onAdDismissedFullScreenContent: (InterstitialAd ad) {
-    //     print('$ad onAdDismissedFullScreenContent.');
-    //     ad.dispose();
-    //   },
-    //   onAdFailedToShowFullScreenContent: (InterstitialAd ad, AdError error) {
-    //     print('$ad onAdFailedToShowFullScreenContent: $error');
-    //     ad.dispose();
-    //   },
-    //   onAdImpression: (InterstitialAd ad) => print('$ad impression occurred.'),
-    // );
-    _initializeGame();
   }
 
   void _initializeGame() {

@@ -8,15 +8,12 @@ import 'package:minesweeper/widget/loading.dart';
 
 
 
-List<String> testDeviceIds = ['5AD02927D73616B20F22FB4FC3CC9D63'];
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
-  RequestConfiguration configuration =
-  RequestConfiguration(testDeviceIds: testDeviceIds);
-  MobileAds.instance.updateRequestConfiguration(configuration);
+  MobileAds.instance;
   runApp(MyApp());
 }
 
@@ -26,7 +23,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Minesweeper',
+      title: 'AA Minesweeper',
       debugShowCheckedModeBanner: false,
       onGenerateRoute: RouteGenerator.generateRoute,
       initialRoute: '/',
